@@ -2,11 +2,22 @@ package main
 
 import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"happybirthday_bot/secret_data"
 	"log"
 )
 
+type secretDataGetter interface {
+	BotToken() string
+}
+
+func newSecretDataStore() secretDataGetter {
+	return secret_data.New()
+}
+
 func main() {
-	bot, err := tgbotapi.NewBotAPI("MyAwesomeBotToken")
+	secretDataStore := newSecretDataStore()
+
+	bot, err := tgbotapi.NewBotAPI(secretDataStore.BotToken())
 	if err != nil {
 		log.Panic(err)
 	}
