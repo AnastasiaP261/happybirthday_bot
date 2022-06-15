@@ -2,7 +2,7 @@ package main
 
 import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"happybirthday_bot/secret_data"
+	"happybirthday_bot/secret_data_store"
 	"log"
 )
 
@@ -11,7 +11,7 @@ type secretDataGetter interface {
 }
 
 func newSecretDataStore() secretDataGetter {
-	return secret_data.New()
+	return secret_data_store.New()
 }
 
 func main() {

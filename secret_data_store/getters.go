@@ -1,4 +1,4 @@
-package secret_data
+package secret_data_store
 
 type store struct{}
 
