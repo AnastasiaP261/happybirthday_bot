@@ -1,2 +1,2 @@
 /.idea/
-/secret_data_store/secret_data.go
+/internal/secret_data_store/secret_data.go
