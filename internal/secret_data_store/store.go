@@ -20,6 +20,7 @@ type Hint struct {
 	Wish     string `yaml:"wish"`
 	Code     string `yaml:"code"`
 	HintText string `yaml:"hintText"`
+	Num      int64  `yaml:"num"`
 }
 
 func (h Hint) GetWish() string {
@@ -32,6 +33,10 @@ func (h Hint) GetCode() string {
 
 func (h Hint) GetHintText() string {
 	return h.HintText
+}
+
+func (h Hint) GetNum() int64 {
+	return h.Num
 }
 
 func New() *store {

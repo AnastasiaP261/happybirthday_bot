@@ -1,19 +1,22 @@
 package controller
 
-import "happybirthday_bot/internal/secret_data_store"
+import (
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"happybirthday_bot/internal/secret_data_store"
+)
 
 type process struct {
-	handlers []rule
+	rules []Rule
 
 	hints  []secret_data_store.Hint
 	errGen errorMsgGenerator
 }
 
-func New(hints []secret_data_store.Hint, errGen errorMsgGenerator, rules ...rule) *process {
+func New(hints []secret_data_store.Hint, errGen errorMsgGenerator, rules []Rule) *process {
 	return &process{
-		errGen:   errGen,
-		handlers: rules,
-		hints:    hints,
+		errGen: errGen,
+		rules:  rules,
+		hints:  hints,
 	}
 }
 
@@ -21,12 +24,13 @@ type errorMsgGenerator interface {
 	GenerateErrorMessage() string
 }
 
-type rule interface {
-	Hand() string
+type Rule interface {
+	RuleProcessing(bot *tgbotapi.BotAPI, chatID int64)
 }
 
 type Hint interface {
 	GetWish() string
 	GetCode() string
 	GetHintText() string
+	GetNum() int64
 }

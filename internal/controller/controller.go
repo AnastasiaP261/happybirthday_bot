@@ -12,6 +12,13 @@ import (
 func (p *process) Process(bot *tgbotapi.BotAPI, update tgbotapi.Update) error {
 	log.Printf("START - [%s] %s", update.Message.From.UserName, update.Message.Text)
 
+	if update.Message.Entities[0].Type == "bot_command" {
+		if update.Message.Text == "/start" {
+			p.rules[0].RuleProcessing(bot, update.Message.Chat.ID)
+			return nil
+		}
+	}
+
 	p.send(bot, "Дешифрую, жди...\n", time.Second*10, update.Message.Chat.ID, update.Message.MessageID)
 
 	hint, err := p.decode(update.Message.Text)
@@ -44,7 +51,7 @@ func (p *process) send(bot *tgbotapi.BotAPI, msgText string, sleepTime time.Dura
 	if msgID != -1 {
 		msg.ReplyToMessageID = msgID
 	}
-	msg.ParseMode = "Markdown"
+	msg.ParseMode = "MarkdownV2"
 
 	_, _ = bot.Send(msg)
 	time.Sleep(sleepTime)
