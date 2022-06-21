@@ -44,7 +44,7 @@ func (p *process) process(text string) (string, error) {
 	}
 }
 
-// send msgID - необязательный параметр. При отправке ID сообщение отправится ответом на указанное. Если это не требуется, отправить -1
+// send При отправке msgID сообщение отправится ответом на указанное. Если это не требуется, отправить -1
 func (p *process) send(bot *tgbotapi.BotAPI, msgText string, sleepTime time.Duration, chatID int64, msgID int) {
 	msg := tgbotapi.NewMessage(chatID, msgText)
 	if msgID != -1 {
