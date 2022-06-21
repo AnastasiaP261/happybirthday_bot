@@ -1,2 +1,2 @@
 /.idea/
-/internal/secret_data_store/secret_data.go
+/config/conf.yaml

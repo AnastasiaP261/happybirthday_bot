@@ -1,11 +1,36 @@
 package secret_data_store
 
-type store struct{}
+import (
+	"fmt"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
+)
 
-func New() *store {
-	return &store{}
+type store struct {
+	Bot struct {
+		BotToken string `yaml:"botToken"`
+	} `yaml:"bot"`
 }
 
-func (*store) BotToken() string {
-	return botToken
+func New() *store {
+	secrDS := &store{}
+	secrDS.getConf()
+
+	return secrDS
+}
+
+func (s *store) getConf() *store {
+	yamlFile, err := ioutil.ReadFile("config/conf.yaml")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	err = yaml.Unmarshal(yamlFile, s)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	return s
+}
+
+func (s *store) BotToken() string {
+	return s.Bot.BotToken
 }
