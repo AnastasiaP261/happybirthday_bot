@@ -12,7 +12,7 @@ import (
 func (p *process) Process(bot *tgbotapi.BotAPI, update tgbotapi.Update) error {
 	log.Printf("START - [%s] %s", update.Message.From.UserName, update.Message.Text)
 
-	p.send(bot, "Дешифрую, жди...\n", time.Second*10, update.Message.Chat.ID, update.Message.MessageID)
+	p.send(bot, "Дешифрую, жди...\n", time.Second*1, update.Message.Chat.ID, update.Message.MessageID)
 
 	hint, err := p.decode(update.Message.Text)
 	if err != nil {
@@ -44,6 +44,7 @@ func (p *process) send(bot *tgbotapi.BotAPI, msgText string, sleepTime time.Dura
 	if msgID != -1 {
 		msg.ReplyToMessageID = msgID
 	}
+	msg.ParseMode = "Markdown"
 
 	_, _ = bot.Send(msg)
 	time.Sleep(sleepTime)
