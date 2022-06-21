@@ -10,7 +10,28 @@ type store struct {
 	Bot struct {
 		BotToken string `yaml:"botToken"`
 	} `yaml:"bot"`
+
+	Hints []Hint `yaml:"hints"`
+
 	Wishes []string `yaml:"wishes"`
+}
+
+type Hint struct {
+	Wish     string `yaml:"wish"`
+	Code     string `yaml:"code"`
+	HintText string `yaml:"hintText"`
+}
+
+func (h Hint) GetWish() string {
+	return h.Wish
+}
+
+func (h Hint) GetCode() string {
+	return h.Code
+}
+
+func (h Hint) GetHintText() string {
+	return h.HintText
 }
 
 func New() *store {
@@ -38,4 +59,8 @@ func (s *store) GetBotToken() string {
 
 func (s *store) GetWishes() []string {
 	return s.Wishes
+}
+
+func (s *store) GetHints() []Hint {
+	return s.Hints
 }

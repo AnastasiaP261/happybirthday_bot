@@ -1,33 +1,32 @@
 package controller
 
+import "happybirthday_bot/internal/secret_data_store"
+
 type process struct {
 	handlers []rule
 
-	configs secretDataGetter
-	errGen  errorMsgGenerator
-	decoder decoder
+	hints  []secret_data_store.Hint
+	errGen errorMsgGenerator
 }
 
-func New(configs secretDataGetter, decoder decoder, errGen errorMsgGenerator, rules ...rule) *process {
+func New(hints []secret_data_store.Hint, errGen errorMsgGenerator, rules ...rule) *process {
 	return &process{
 		errGen:   errGen,
-		decoder:  decoder,
 		handlers: rules,
-		configs:  configs,
+		hints:    hints,
 	}
-}
-
-type secretDataGetter interface {
 }
 
 type errorMsgGenerator interface {
 	GenerateErrorMessage(chatID int64) string
 }
 
-type decoder interface {
-	Decode(str string) (string, error)
-}
-
 type rule interface {
 	Hand() string
+}
+
+type Hint interface {
+	GetWish() string
+	GetCode() string
+	GetHintText() string
 }

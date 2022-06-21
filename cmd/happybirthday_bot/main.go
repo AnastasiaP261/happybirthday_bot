@@ -3,7 +3,6 @@ package main
 import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	controllerpb "happybirthday_bot/internal/controller"
-	"happybirthday_bot/internal/decoder"
 	"happybirthday_bot/internal/error_messages_generator"
 	"happybirthday_bot/internal/secret_data_store"
 	"log"
@@ -11,7 +10,7 @@ import (
 
 func main() {
 	secretDataStore := secret_data_store.New()
-	controller := controllerpb.New(secretDataStore, decoder.New(secretDataStore), error_messages_generator.New(), nil)
+	controller := controllerpb.New(secretDataStore.GetHints(), error_messages_generator.New(), nil)
 
 	bot, err := tgbotapi.NewBotAPI(secretDataStore.GetBotToken())
 	if err != nil {
