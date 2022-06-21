@@ -6,6 +6,6 @@ func New() *ErrorGenerator {
 	return &ErrorGenerator{}
 }
 
-func (e *ErrorGenerator) GenerateErrorMessage(chatID int64) string {
+func (e *ErrorGenerator) GenerateErrorMessage() string {
 	return "какая-то ошибка"
 }

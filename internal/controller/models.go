@@ -18,7 +18,7 @@ func New(hints []secret_data_store.Hint, errGen errorMsgGenerator, rules ...rule
 }
 
 type errorMsgGenerator interface {
-	GenerateErrorMessage(chatID int64) string
+	GenerateErrorMessage() string
 }
 
 type rule interface {
