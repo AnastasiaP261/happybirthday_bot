@@ -12,14 +12,14 @@ import (
 func (p *process) Process(bot *tgbotapi.BotAPI, update tgbotapi.Update) error {
 	log.Printf("START - [%s] %s", update.Message.From.UserName, update.Message.Text)
 
-	if update.Message.Entities[0].Type == "bot_command" {
+	if len(update.Message.Entities) != 0 && update.Message.Entities[0].Type == "bot_command" {
 		if update.Message.Text == "/start" {
 			p.rules[0].RuleProcessing(bot, update.Message.Chat.ID)
 			return nil
 		}
 	}
 
-	p.send(bot, "Дешифрую, жди...\n", time.Second*10, update.Message.Chat.ID, update.Message.MessageID)
+	p.send(bot, "Дешифрую, жди\\.\\.\\.\n", time.Second*10, update.Message.Chat.ID, update.Message.MessageID)
 
 	hint, err := p.decode(update.Message.Text)
 	if err != nil {
@@ -30,7 +30,7 @@ func (p *process) Process(bot *tgbotapi.BotAPI, update tgbotapi.Update) error {
 		return nil
 	}
 
-	p.send(bot, "Успешно!\nТебе пожелали:\n\n"+f.ToBold(hint.Wish), time.Second*3, update.Message.Chat.ID, -1)
+	p.send(bot, "Успешно\\!\nТебе пожелали:\n\n"+f.ToBold(hint.Wish), time.Second*3, update.Message.Chat.ID, -1)
 	p.send(bot, hint.GetHintText(), time.Second*10, update.Message.Chat.ID, -1)
 
 	return nil
