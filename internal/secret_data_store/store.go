@@ -10,6 +10,7 @@ type store struct {
 	Bot struct {
 		BotToken string `yaml:"botToken"`
 	} `yaml:"bot"`
+	Wishes []string `yaml:"wishes"`
 }
 
 func New() *store {
@@ -31,6 +32,10 @@ func (s *store) getConf() *store {
 	return s
 }
 
-func (s *store) BotToken() string {
+func (s *store) GetBotToken() string {
 	return s.Bot.BotToken
+}
+
+func (s *store) GetWishes() []string {
+	return s.Wishes
 }

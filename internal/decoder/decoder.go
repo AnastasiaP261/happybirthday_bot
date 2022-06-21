@@ -5,31 +5,33 @@ import (
 	"happybirthday_bot/internal/formatting"
 )
 
-type Decoder struct{}
-
-func New() *Decoder {
-	return &Decoder{}
+type config interface {
+	GetWishes() []string
 }
 
-var hardDecoder = map[string]string{
-	"YS4N3VPNVE": "УДАЧИ",
-	"HECKGSFQRB": "РАДОСТИ",
-	"TFMARFRQ9B": "СЧАСТЬЯ",
-	"MAZWQZF2D6": "МИНЕТОВ",
-	"MKF7NG8F79": "ЗДОРОВЬЯ",
-	"BLMBYBU9VG": "КАРБОНАРЫ",
-	"P5QXJC7Q38": "ЯСНЫХ ДНЕЙ",
-	"3L5MN2PPMD": "МНОГО ДЕНЯК",
-	"2RJB8ZYD9C": "МЕНЬШЕ БЕРЁЗ",
-	"56FCHZJE4F": "ВСЕЙ КОЛЫ МИРА",
-	"UXBSX33HZ8": "СЛАДКИХ ГРАНАТОВ",
-	"HFXRAHPVQL": "ИСПОЛНЕНИЯ ЖЕЛАНИЙ",
-	"A7KFFNW5LY": "ПРОЦВЕТАНИЯ ПИРАТСТВУ",
-	"759JJWUBAG": "ХОРОШЕЙ ИГРЫ ;)",
+// валидные коды, к которым мапятся пожелания
+var codes = []string{
+	"YS4N3VPNVE", "HECKGSFQRB", "TFMARFRQ9B", "MAZWQZF2D6", "MKF7NG8F79", "BLMBYBU9VG", "P5QXJC7Q38", "3L5MN2PPMD",
+	"2RJB8ZYD9C", "56FCHZJE4F", "UXBSX33HZ8", "HFXRAHPVQL", "A7KFFNW5LY", "759JJWUBAG",
+}
+
+type Decoder struct {
+	hardDecoder map[string]string
+}
+
+func New(conf config) *Decoder {
+	wishes := conf.GetWishes()
+	decoder := make(map[string]string, len(wishes))
+
+	for i := 0; i < len(wishes); i++ {
+		decoder[codes[i]] = wishes[i]
+	}
+
+	return &Decoder{hardDecoder: decoder}
 }
 
 func (d *Decoder) Decode(str string) (string, error) {
-	if ans, ok := hardDecoder[formatting.Format(str)]; !ok {
+	if ans, ok := d.hardDecoder[formatting.Format(str)]; !ok {
 		return ans, nil
 	}
 	return "", errors.New("dacode error")

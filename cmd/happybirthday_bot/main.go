@@ -11,9 +11,9 @@ import (
 
 func main() {
 	secretDataStore := secret_data_store.New()
-	controller := controllerpb.New(secretDataStore, decoder.New(), error_messages_generator.New(), nil)
+	controller := controllerpb.New(secretDataStore, decoder.New(secretDataStore), error_messages_generator.New(), nil)
 
-	bot, err := tgbotapi.NewBotAPI(secretDataStore.BotToken())
+	bot, err := tgbotapi.NewBotAPI(secretDataStore.GetBotToken())
 	if err != nil {
 		log.Panic(err)
 	}
