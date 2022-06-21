@@ -1,12 +1,10 @@
 package controller
 
 import (
-	b64 "encoding/base64"
 	"errors"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	f "happybirthday_bot/internal/formatting"
 	"log"
-	"strings"
 	"time"
 )
 
@@ -15,15 +13,14 @@ func (p *process) Process(bot *tgbotapi.BotAPI, update tgbotapi.Update) error {
 
 	p.send(bot, "Дешифрую, жди...\n", time.Second*10, update.Message.Chat.ID, update.Message.MessageID)
 
-	decodeBytes, err := b64.StdEncoding.DecodeString(update.Message.Text)
+	decodeText, err := p.decoder.Decode(update.Message.Text)
 	if err != nil {
-		log.Printf("ENCODE ERR - [%s] %s", update.Message.From.UserName, update.Message.Text)
+		log.Printf("DECODE ERR - [%s] %s", update.Message.From.UserName, update.Message.Text)
 
 		txt := p.errGen.GenerateErrorMessage(update.Message.Chat.ID)
 		p.send(bot, txt, time.Second*1, update.Message.Chat.ID, -1)
 		return nil
 	}
-	decodeText := strings.ToUpper(string(decodeBytes))
 
 	answerText, err := p.process(decodeText)
 	if err != nil {
@@ -34,7 +31,7 @@ func (p *process) Process(bot *tgbotapi.BotAPI, update tgbotapi.Update) error {
 		return err
 	}
 
-	p.send(bot, "Успешно!\nПолучено:\n\n"+f.ToBold(decodeText), time.Second*1, update.Message.Chat.ID, -1)
+	p.send(bot, "Успешно!\nТебе пожелали:\n\n"+f.ToBold(decodeText), time.Second*1, update.Message.Chat.ID, -1)
 	p.send(bot, answerText, time.Second*1, update.Message.Chat.ID, -1)
 
 	return nil

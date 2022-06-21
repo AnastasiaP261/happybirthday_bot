@@ -1,19 +1,17 @@
 package controller
 
-import (
-	"happybirthday_bot/internal/error_messages_generator"
-)
-
 type process struct {
 	handlers []rule
 
-	errGen errorMsgGenerator
+	errGen  errorMsgGenerator
+	decoder decoder
 }
 
-func New(hadlers ...rule) *process {
+func New(decoder decoder, errGen errorMsgGenerator, rules ...rule) *process {
 	return &process{
-		errGen:   NewErrorMsgGenerator(),
-		handlers: hadlers,
+		errGen:   errGen,
+		decoder:  decoder,
+		handlers: rules,
 	}
 }
 
@@ -21,8 +19,8 @@ type errorMsgGenerator interface {
 	GenerateErrorMessage(chatID int64) string
 }
 
-func NewErrorMsgGenerator() errorMsgGenerator {
-	return error_messages_generator.New()
+type decoder interface {
+	Decode(str string) (string, error)
 }
 
 type rule interface {
