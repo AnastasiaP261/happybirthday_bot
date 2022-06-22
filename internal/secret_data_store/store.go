@@ -47,7 +47,7 @@ func New() *store {
 }
 
 func (s *store) getConf() *store {
-	yamlFile, err := ioutil.ReadFile("config/conf.yaml")
+	yamlFile, err := ioutil.ReadFile("config/conf.yml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}
