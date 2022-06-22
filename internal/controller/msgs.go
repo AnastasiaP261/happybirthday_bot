@@ -9,7 +9,6 @@ import (
 func loading(bot *tgbotapi.BotAPI, chatID int64, timer *time.Timer) {
 	msg := tgbotapi.NewMessage(chatID, `\`)
 	sended, _ := bot.Send(msg)
-	time.Sleep(time.Millisecond * 50)
 
 	alive := true
 	for alive {
@@ -17,6 +16,7 @@ func loading(bot *tgbotapi.BotAPI, chatID int64, timer *time.Timer) {
 		case <-timer.C:
 			alive = false
 		default:
+			time.Sleep(time.Millisecond * 50)
 			bot.Send(tgbotapi.NewEditMessageText(chatID, sended.MessageID, `|`))
 			time.Sleep(time.Millisecond * 50)
 			bot.Send(tgbotapi.NewEditMessageText(chatID, sended.MessageID, `/`))
@@ -24,7 +24,6 @@ func loading(bot *tgbotapi.BotAPI, chatID int64, timer *time.Timer) {
 			bot.Send(tgbotapi.NewEditMessageText(chatID, sended.MessageID, `-`))
 			time.Sleep(time.Millisecond * 50)
 			bot.Send(tgbotapi.NewEditMessageText(chatID, sended.MessageID, `\`))
-			time.Sleep(time.Millisecond * 50)
 		}
 	}
 

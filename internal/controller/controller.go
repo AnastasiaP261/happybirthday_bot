@@ -45,7 +45,7 @@ func (p *process) Process(bot *tgbotapi.BotAPI, update tgbotapi.Update) error {
 	}
 
 	// отправляем сообщение об успехе и подсказку
-	msg = tgbotapi.NewMessage(update.Message.Chat.ID, "Успешно!\nТебе пожелали:\n\n"+f.ToBold(hint.Wish))
+	msg = tgbotapi.NewMessage(update.Message.Chat.ID, "Успешно\\!\nТебе пожелали:\n\n"+f.ToBold(hint.Wish))
 	msg.ParseMode = "MarkdownV2"
 	bot.Send(msg)
 	time.Sleep(time.Second * 1)
@@ -63,16 +63,4 @@ func (p *process) decode(msgText string) (secret_data_store.Hint, error) {
 		}
 	}
 	return secret_data_store.Hint{}, errors.New("no match")
-}
-
-// send При отправке msgID сообщение отправится ответом на указанное. Если это не требуется, отправить -1
-func (p *process) send(bot *tgbotapi.BotAPI, msgText string, sleepTime time.Duration, chatID int64, msgID int) {
-	msg := tgbotapi.NewMessage(chatID, msgText)
-	if msgID != -1 {
-		msg.ReplyToMessageID = msgID
-	}
-	msg.ParseMode = "MarkdownV2"
-
-	_, _ = bot.Send(msg)
-	time.Sleep(sleepTime)
 }
