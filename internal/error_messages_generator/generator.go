@@ -7,5 +7,5 @@ func New() *ErrorGenerator {
 }
 
 func (e *ErrorGenerator) GenerateErrorMessage() string {
-	return "какая\\-то ошибка"
+	return "какая-то ошибка"
 }
