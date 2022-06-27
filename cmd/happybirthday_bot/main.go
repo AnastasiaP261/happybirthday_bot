@@ -12,11 +12,21 @@ import (
 func main() {
 	secretDataStore := secret_data_store.New()
 
-	allRules := []controllerpb.Rule{
+	allHints := []controllerpb.Rule{
 		rules.StartHint{},
+		rules.Hint1{},
+		rules.Hint2{},
+		rules.Hint3{},
+		rules.Hint4{},
+		rules.Hint5{},
+		rules.Hint6{},
+		rules.Hint7{},
+		rules.Hint8{},
+		rules.Hint9{},
+		rules.Hint10{},
 	}
 
-	controller := controllerpb.New(secretDataStore.GetHints(), error_messages_generator.New(), allRules)
+	controller := controllerpb.New(secretDataStore.GetHints(), error_messages_generator.New(), allHints)
 
 	bot, err := tgbotapi.NewBotAPI(secretDataStore.GetBotToken())
 	if err != nil {

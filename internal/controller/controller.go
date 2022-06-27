@@ -7,7 +7,6 @@ import (
 	"happybirthday_bot/internal/secret_data_store"
 	"log"
 	"regexp"
-	"strconv"
 	"time"
 )
 
@@ -50,8 +49,7 @@ func (p *process) Process(bot *tgbotapi.BotAPI, update tgbotapi.Update) error {
 	bot.Send(msg)
 	time.Sleep(time.Second * 1)
 
-	bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, strconv.FormatInt(hint.GetNum(), 10)))
-	time.Sleep(time.Second * 1)
+	p.rules[hint.GetNum()].RuleProcessing(bot, update.Message.Chat.ID)
 
 	return nil
 }

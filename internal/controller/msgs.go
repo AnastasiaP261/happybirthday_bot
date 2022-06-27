@@ -7,6 +7,8 @@ import (
 
 // loading показывает сообщение с загрузочным "колесиком" в псевдографике в течение времени, которое установлено в таймере
 func loading(bot *tgbotapi.BotAPI, chatID int64, timer *time.Timer) {
+	pause := time.Millisecond * 200
+
 	msg := tgbotapi.NewMessage(chatID, `\`)
 	sended, _ := bot.Send(msg)
 
@@ -16,13 +18,13 @@ func loading(bot *tgbotapi.BotAPI, chatID int64, timer *time.Timer) {
 		case <-timer.C:
 			alive = false
 		default:
-			time.Sleep(time.Millisecond * 50)
+			time.Sleep(pause)
 			bot.Send(tgbotapi.NewEditMessageText(chatID, sended.MessageID, `|`))
-			time.Sleep(time.Millisecond * 50)
+			time.Sleep(pause)
 			bot.Send(tgbotapi.NewEditMessageText(chatID, sended.MessageID, `/`))
-			time.Sleep(time.Millisecond * 50)
+			time.Sleep(pause)
 			bot.Send(tgbotapi.NewEditMessageText(chatID, sended.MessageID, `-`))
-			time.Sleep(time.Millisecond * 50)
+			time.Sleep(pause)
 			bot.Send(tgbotapi.NewEditMessageText(chatID, sended.MessageID, `\`))
 		}
 	}
