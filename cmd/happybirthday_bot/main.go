@@ -4,7 +4,7 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	controllerpb "happybirthday_bot/internal/controller"
 	"happybirthday_bot/internal/error_messages_generator"
-	"happybirthday_bot/internal/rules"
+	"happybirthday_bot/internal/hints"
 	"happybirthday_bot/internal/secret_data_store"
 	"log"
 )
@@ -13,7 +13,7 @@ func main() {
 	secretDataStore := secret_data_store.New()
 
 	allRules := []controllerpb.Rule{
-		rules.StartRule{},
+		rules.StartHint{},
 	}
 
 	controller := controllerpb.New(secretDataStore.GetHints(), error_messages_generator.New(), allRules)
