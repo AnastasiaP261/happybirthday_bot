@@ -113,7 +113,7 @@ func (r Hint5) RuleProcessing(bot *tgbotapi.BotAPI, chatID int64) {
 			msg := tgbotapi.NewMessage(chatID, t)
 			msg.ParseMode = "MarkdownV2"
 			bot.Send(msg)
-			time.Sleep(time.Millisecond * 150)
+			time.Sleep(time.Second * 1)
 		}
 	}
 	time.Sleep(time.Second * 9)
@@ -251,57 +251,10 @@ func (r Hint10) RuleProcessing(bot *tgbotapi.BotAPI, chatID int64) {
 }
 
 func (r Hint10) finish(bot *tgbotapi.BotAPI, chatID int64) {
-	time.Sleep(time.Minute * 10)
-
+	time.Sleep(time.Minute * 8)
 	{
 		msg := tgbotapi.NewMessage(chatID, finish1)
 		msg.ParseMode = "MarkdownV2"
 		bot.Send(msg)
 	}
-	time.Sleep(time.Second * 5)
-	{
-		msg := tgbotapi.NewMessage(chatID, finish2)
-		msg.ParseMode = "MarkdownV2"
-		bot.Send(msg)
-	}
-	time.Sleep(time.Second * 1)
-	{
-		msg := tgbotapi.NewMessage(chatID, finish3)
-		msg.ParseMode = "MarkdownV2"
-		sended, _ := bot.Send(msg)
-
-		time.Sleep(time.Second * 1)
-
-		bot.Send(tgbotapi.NewDeleteMessage(chatID, sended.MessageID))
-	}
-	{
-		txts := []string{hint10_1, hint10_2, hint10_3, hint10_4}
-
-		for _, t := range txts {
-			msg := tgbotapi.NewMessage(chatID, t)
-			msg.ParseMode = "MarkdownV2"
-			bot.Send(msg)
-			time.Sleep(time.Second * 1)
-		}
-	}
-	time.Sleep(time.Second * 20)
-	{
-		txts := []string{hint10_5, hint10_6, hint10_7}
-
-		for _, t := range txts {
-			msg := tgbotapi.NewMessage(chatID, t)
-			msg.ParseMode = "MarkdownV2"
-			bot.Send(msg)
-			time.Sleep(time.Second * 1)
-		}
-	}
-	time.Sleep(time.Second * 1)
-	{
-		data, _ := ioutil.ReadFile("images/brat.jpeg")
-		b := tgbotapi.FileBytes{Name: "brat.jpeg", Bytes: data}
-
-		msg := tgbotapi.NewPhoto(chatID, b)
-		bot.Send(msg)
-	}
-	time.Sleep(time.Minute * 10)
 }
