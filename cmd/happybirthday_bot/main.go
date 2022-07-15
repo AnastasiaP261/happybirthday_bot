@@ -7,6 +7,7 @@ import (
 	"happybirthday_bot/internal/hints"
 	"happybirthday_bot/internal/secret_data_store"
 	"log"
+	"sync"
 )
 
 func main() {
@@ -42,13 +43,22 @@ func main() {
 
 	updates := bot.GetUpdatesChan(u)
 
+	var wg sync.WaitGroup
+	goroutines := make(chan struct{}, 1) // ограничение кол-ва потоков по необходимости
 	for update := range updates {
-		if update.Message != nil { // If we got a message
-			err := controller.Process(bot, update)
-			if err != nil {
-				log.Printf("Authorized on account %s", bot.Self.UserName)
-				tgbotapi.NewMessage(update.Message.Chat.ID, "Произошла какая-то ошибка.\nМашины тоже ошибаются((")
+		update := update
+		goroutines <- struct{}{}
+		wg.Add(1)
+		go func(goroutines <-chan struct{}) {
+			if update.Message != nil { // If we got a message
+				err := controller.Process(bot, update)
+				if err != nil {
+					log.Printf("Authorized on account %s", bot.Self.UserName)
+					tgbotapi.NewMessage(update.Message.Chat.ID, "Произошла какая-то ошибка.\nМашины тоже ошибаются((")
+				}
+				<-goroutines
+				wg.Done()
 			}
-		}
+		}(goroutines)
 	}
 }
